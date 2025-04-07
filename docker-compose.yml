@@ -1,0 +1,17 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:15
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: crypto
+    volumes:
+        - pg-data:/var/lib/postgresql/data
+        - pg-config:/etc/postgresql
+
+volumes:
+    pg-data:
+    pg-config:
