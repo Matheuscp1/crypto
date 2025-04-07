@@ -3,6 +3,7 @@ package com.crypto.controller;
 import com.crypto.dto.AssetDto;
 import com.crypto.dto.AssetInputDto;
 import com.crypto.model.Asset;
+import com.crypto.openapi.AssetControllerOpenApi;
 import com.crypto.service.AssetService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/asset")
 @AllArgsConstructor
-public class AssetController {
+public class AssetController implements AssetControllerOpenApi {
 
     @Autowired
     private AssetService assetService;

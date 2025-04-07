@@ -3,6 +3,7 @@ package com.crypto.controller;
 import com.crypto.dto.WalletDto;
 import com.crypto.dto.WalletInputDto;
 import com.crypto.model.Wallet;
+import com.crypto.openapi.WalletControllerOpenApi;
 import com.crypto.service.WalletService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/wallet")
 @AllArgsConstructor
-public class WalletController {
+public class WalletController implements WalletControllerOpenApi {
 
     @Autowired
     private WalletService walletService;
 
     @GetMapping("")
-    public List<WalletDto> getWallet() {
+    public List<WalletDto> getWallets() {
         return walletService.findAll();
     }
 

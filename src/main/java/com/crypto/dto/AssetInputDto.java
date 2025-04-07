@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class AssetInputDto {
+
     @NotNull
     private String walletId;
 

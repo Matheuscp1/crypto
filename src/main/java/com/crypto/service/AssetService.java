@@ -9,8 +9,11 @@ import com.crypto.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,9 @@ public class AssetService {
 
     @Autowired
     private WalletRepository walletRepository;
+    @Autowired
+    private WebClient webClient;
+
 
     public AssetDto createAsset(AssetInputDto asset) {
         Asset assetEntity = asset.toEntitie();
@@ -38,6 +44,19 @@ public class AssetService {
     }
 
     public List<AssetDto> findAll() {
+        String COINCAP_API_URL = "https://api.coincap.io/v2/assets/";
+            String url = COINCAP_API_URL + "BTC";
+            try{
+                Map block = this.webClient
+                        .get()
+                        .uri(url)
+                        .retrieve()
+                        .bodyToMono(Map.class)
+                        .block();
+                System.out.println(block);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         return assetRepository.findAll()
                 .stream().map(AssetDto::fromEntity).collect(Collectors.toList());
 
