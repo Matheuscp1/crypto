@@ -16,11 +16,13 @@ import java.util.stream.Collectors;
 @Builder
 public class WalletDto {
     private String id;
+    private String email;
     private List<AssetDto> assets;
 
     public static WalletDto fromEntity(Wallet wallet) {
         return WalletDto.builder()
                 .id(wallet.getId())
+                .email(wallet.getEmail())
                 .assets(wallet.getAsset() != null ? wallet.getAsset().stream()
                         .map(asset -> new AssetDto(asset.getId(), asset.getSymbol(),
                                 asset.getQuantity(),

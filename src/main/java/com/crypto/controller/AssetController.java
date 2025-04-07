@@ -1,5 +1,7 @@
 package com.crypto.controller;
 
+import com.crypto.dto.AssetDto;
+import com.crypto.dto.AssetInputDto;
 import com.crypto.model.Asset;
 import com.crypto.service.AssetService;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/asset")
@@ -26,18 +29,18 @@ public class AssetController {
     private AssetService assetService;
 
     @GetMapping("")
-    public List<Asset> getUsers() {
+    public List<AssetDto> getAssets() {
         return assetService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Asset getUsers(@PathVariable String id) {
-        return assetService.findById(id).getBody();
+    public Optional<AssetDto> getAssetById(@PathVariable String id) {
+        return assetService.findById(id);
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping()
-    public Asset save(@RequestBody Asset asset) {
+    public AssetDto save(@RequestBody AssetInputDto asset) {
         return assetService.createAsset(asset);
     }
 
@@ -48,7 +51,7 @@ public class AssetController {
     }
 
     @PutMapping("/{id}")
-    public Asset update(@PathVariable String id,@RequestBody Asset asset) {
+    public AssetDto update(@PathVariable String id,@RequestBody AssetInputDto asset) {
         return assetService.update(id,asset);
     }
 

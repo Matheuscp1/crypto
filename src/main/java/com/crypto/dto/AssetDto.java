@@ -18,6 +18,11 @@ public class AssetDto {
     private BigDecimal quantity;
     private BigDecimal price;
     private BigDecimal value;
+    private WalletGroupDto wallet;
+
+    public AssetDto(String id, String symbol, BigDecimal quantity,
+                    BigDecimal price, BigDecimal value) {
+    }
 
     public static AssetDto fromEntity(Asset asset) {
         return AssetDto.builder()
@@ -26,6 +31,7 @@ public class AssetDto {
                 .quantity(asset.getQuantity())
                 .price(asset.getPrice())
                 .value(asset.getValue())
+                .wallet(WalletGroupDto.fromEntity(asset.getWallet()))
                 .build();
     }
 }

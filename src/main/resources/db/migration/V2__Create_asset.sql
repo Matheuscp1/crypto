@@ -1,7 +1,6 @@
 CREATE TABLE asset
 (
     id        VARCHAR(36)  NOT NULL,
-    user_id   VARCHAR(36)  NOT NULL,
     wallet_id VARCHAR(36)  NOT NULL,
     symbol    VARCHAR(255) NOT NULL,
     quantity  DECIMAL      NOT NULL,

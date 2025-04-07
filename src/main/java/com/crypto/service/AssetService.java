@@ -1,13 +1,18 @@
 package com.crypto.service;
 
+import com.crypto.dto.AssetDto;
+import com.crypto.dto.AssetInputDto;
 import com.crypto.model.Asset;
+import com.crypto.model.Wallet;
 import com.crypto.repository.AssetRepository;
+import com.crypto.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @EnableScheduling
 
@@ -17,30 +22,50 @@ public class AssetService {
     @Autowired
     private AssetRepository assetRepository;
 
-    public Asset createAsset(Asset asset) {
-        return assetRepository.save(asset);
+    @Autowired
+    private WalletRepository walletRepository;
+
+    public AssetDto createAsset(AssetInputDto asset) {
+        Asset assetEntity = asset.toEntitie();
+
+        Wallet wallet = walletRepository.findById(asset.getWalletId()).orElse(null);
+        if(wallet != null) {
+            assetEntity.setWallet(wallet);
+            assetRepository.save(assetEntity);
+            return AssetDto.fromEntity(assetEntity);
+        }
+        throw new IllegalArgumentException("Wallet not found");
     }
 
-    public List<Asset> findAll() {
-        return assetRepository.findAll();
+    public List<AssetDto> findAll() {
+        return assetRepository.findAll()
+                .stream().map(AssetDto::fromEntity).collect(Collectors.toList());
+
     }
 
-    public ResponseEntity<Asset> findById(String id) {
+    public Optional<AssetDto> findById(String id) {
         return assetRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(AssetDto::fromEntity);
     }
 
     public void delete(String id) {
        this.assetRepository.findById(id).ifPresent(assetRepository::delete);
     }
 
-    public Asset update(String id, Asset asset) {
-        Asset body = this.findById(id).getBody();
-        if(body != null) {
+    public AssetDto update(String id, AssetInputDto asset) {
+        Optional<Asset> body = assetRepository.findById(id);
+        if(body.isPresent()) {
+            Optional<Wallet> wallet = walletRepository.findById(asset.getWalletId());
+            if(wallet.isEmpty()) {
+                throw new IllegalArgumentException("Wallet not found");
+            }
+            Asset assetEntitie = asset.toEntitie();
+            assetEntitie.setId(id);
+            assetEntitie.setWallet(wallet.get());
+            this.assetRepository.save(assetEntitie);
+            return AssetDto.fromEntity(assetEntitie);
 
-            this.assetRepository.save(body);
         }
-        return body;
+        throw new IllegalArgumentException("Asset not found");
     }
 }
