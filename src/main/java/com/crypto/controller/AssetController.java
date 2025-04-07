@@ -1,7 +1,7 @@
 package com.crypto.controller;
 
-import com.crypto.model.User;
-import com.crypto.service.UserService;
+import com.crypto.model.Asset;
+import com.crypto.service.AssetService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,45 +12,45 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/asset")
 @AllArgsConstructor
-public class UserController {
+public class AssetController {
 
     @Autowired
-    private UserService userService;
+    private AssetService assetService;
 
     @GetMapping("")
-    public List<User> getUsers() {
-        return userService.findAll();
+    public List<Asset> getUsers() {
+        return assetService.findAll();
     }
 
     @GetMapping("/{id}")
-    public User getUsers(@PathVariable String id) {
-        return userService.findById(id).getBody();
+    public Asset getUsers(@PathVariable String id) {
+        return assetService.findById(id).getBody();
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping()
-    public User save(@RequestBody User user) {
-        return userService.save(user);
+    public Asset save(@RequestBody Asset asset) {
+        return assetService.createAsset(asset);
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void save(@PathVariable String id) {
-         userService.delete(id);
+    public void delete(@PathVariable String id) {
+        assetService.delete(id);
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable String id,@RequestBody User user) {
-        userService.update(id,user);
+    public Asset update(@PathVariable String id,@RequestBody Asset asset) {
+        return assetService.update(id,asset);
     }
+
 
 }

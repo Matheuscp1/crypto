@@ -31,10 +31,8 @@ public class Wallet {
     @Column(length = 36, nullable = false)
     protected String id;
 
-    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    @Column(length = 100, nullable = false)
+    private String email;
 
     @OneToMany(mappedBy = "wallet",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
