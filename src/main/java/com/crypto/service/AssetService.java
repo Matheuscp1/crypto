@@ -28,18 +28,24 @@ public class AssetService {
 
     @Autowired
     private WalletRepository walletRepository;
-    @Autowired
-    private WebClient webClient;
 
+    @Autowired
+    private CryptoPriceService cryptoPriceService;
 
     public AssetDto createAsset(AssetInputDto asset) {
         Asset assetEntity = asset.toEntitie();
 
         Wallet wallet = walletRepository.findById(asset.getWalletId()).orElse(null);
         if(wallet != null) {
-            assetEntity.setWallet(wallet);
-            assetRepository.save(assetEntity);
-            return AssetDto.fromEntity(assetEntity);
+            BigDecimal tokenPrice = cryptoPriceService.getTokenPrice(asset.getSymbol());
+            if (tokenPrice != null){
+                assetEntity.setWallet(wallet);
+                assetRepository.save(assetEntity);
+                return AssetDto.fromEntity(assetEntity);
+            }else {
+                throw new IllegalArgumentException("Price not found");
+            }
+
         }
         throw new IllegalArgumentException("Wallet not found");
     }

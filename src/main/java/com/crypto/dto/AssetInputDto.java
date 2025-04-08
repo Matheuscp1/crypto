@@ -24,22 +24,22 @@ import java.math.BigDecimal;
 @Builder
 public class AssetInputDto {
 
-    @NotNull
+    @NotNull(message = "walletId cannot be null")
     private String walletId;
 
-    @NotNull
+    @NotNull(message = "symbol cannot be null")
     private String symbol;
 
-    @NotNull
-    @Min(value = 1, message = "O price deve ser maior que zero.")
+    @NotNull(message = "quantity cannot be null")
+    @Min(value = 1, message = "quantity must be greater than zero.")
     private BigDecimal quantity;
 
-    @NotNull
-    @Min(value = 1, message = "O price deve ser maior que zero.")
+    @NotNull(message = "price cannot be null")
+    @Min(value = 1, message = "price must be greater than zero.")
     private BigDecimal price;
 
-    @NotNull
-    @Min(value = 1, message = "O price deve ser maior que zero.")
+    @NotNull(message = "value cannot be null")
+    @Min(value = 1, message = "value must be greater than zero.")
     private BigDecimal value;
 
 

@@ -8,6 +8,7 @@ import com.crypto.service.AssetService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +42,7 @@ public class AssetController implements AssetControllerOpenApi {
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping()
-    public AssetDto save(@RequestBody AssetInputDto asset) {
+    public AssetDto save(@RequestBody @Validated AssetInputDto asset) {
         return assetService.createAsset(asset);
     }
 
@@ -52,7 +53,7 @@ public class AssetController implements AssetControllerOpenApi {
     }
 
     @PutMapping("/{id}")
-    public AssetDto update(@PathVariable String id,@RequestBody AssetInputDto asset) {
+    public AssetDto update(@PathVariable String id,@RequestBody @Validated  AssetInputDto asset) {
         return assetService.update(id,asset);
     }
 
