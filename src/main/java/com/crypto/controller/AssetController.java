@@ -30,7 +30,7 @@ public class AssetController implements AssetControllerOpenApi {
     @Autowired
     private AssetService assetService;
 
-    @GetMapping("")
+    @GetMapping()
     public List<AssetDto> getAssets() {
         return assetService.findAll();
     }

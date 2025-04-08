@@ -35,11 +35,9 @@ public class AssetInputDto {
     private BigDecimal quantity;
 
     @NotNull(message = "price cannot be null")
-    @Min(value = 1, message = "price must be greater than zero.")
     private BigDecimal price;
 
     @NotNull(message = "value cannot be null")
-    @Min(value = 1, message = "value must be greater than zero.")
     private BigDecimal value;
 
 

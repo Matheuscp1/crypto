@@ -27,7 +27,6 @@ public class ScheduledTaskService {
     @Autowired
     CryptoPriceService cryptoPriceService;
 
-    @Scheduled(fixedRate = 1200000)
     public void updatePrices() {
         ExecutorService executor = Executors.newFixedThreadPool(3);
         List<String> tokens = Arrays .asList("BTC", "ETH", "XRP","USDT","BNB","USDC","SOL","DOGE","TRX","ADA");
