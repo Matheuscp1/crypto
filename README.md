@@ -18,6 +18,7 @@ This project already has some libraries and functionalities ready, such as the f
 # API is listening on port 8080
 # The token needs to be changed in the api-x-key property to extract the CoinCap api, the token has limitations of 2500 requests
 # Upload the database container in docker-compose
+# Swagger http://localhost:8080/swagger-ui/index.html
 
 ## Considerations
 
