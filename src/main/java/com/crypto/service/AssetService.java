@@ -6,6 +6,7 @@ import com.crypto.model.Asset;
 import com.crypto.model.Wallet;
 import com.crypto.repository.AssetRepository;
 import com.crypto.repository.WalletRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
@@ -44,22 +45,8 @@ public class AssetService {
     }
 
     public List<AssetDto> findAll() {
-        String COINCAP_API_URL = "https://api.coincap.io/v2/assets/";
-            String url = COINCAP_API_URL + "BTC";
-            try{
-                Map block = this.webClient
-                        .get()
-                        .uri(url)
-                        .retrieve()
-                        .bodyToMono(Map.class)
-                        .block();
-                System.out.println(block);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
         return assetRepository.findAll()
                 .stream().map(AssetDto::fromEntity).collect(Collectors.toList());
-
     }
 
     public Optional<AssetDto> findById(String id) {
@@ -67,10 +54,12 @@ public class AssetService {
                 .map(AssetDto::fromEntity);
     }
 
+    @Transactional
     public void delete(String id) {
        this.assetRepository.findById(id).ifPresent(assetRepository::delete);
     }
 
+    @Transactional
     public AssetDto update(String id, AssetInputDto asset) {
         Optional<Asset> body = assetRepository.findById(id);
         if(body.isPresent()) {
@@ -86,5 +75,13 @@ public class AssetService {
 
         }
         throw new IllegalArgumentException("Asset not found");
+    }
+
+    public int updateAssetByPrice(String symbol, BigDecimal price) {
+        return assetRepository.updateAssetByPrice(symbol,price);
+    }
+
+    public List<Asset> findBySymbol(String symbol) {
+        return assetRepository.findBySymbol(symbol);
     }
 }

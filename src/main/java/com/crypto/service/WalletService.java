@@ -4,6 +4,7 @@ import com.crypto.dto.WalletDto;
 import com.crypto.dto.WalletInputDto;
 import com.crypto.model.Wallet;
 import com.crypto.repository.WalletRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class WalletService {
     @Autowired
     private WalletRepository walletRepository;
 
+    @Transactional
     public Wallet createWallet(WalletInputDto wallet) {
         Wallet walletEntity = new Wallet();
         Wallet byEmail = walletRepository.findByEmail(wallet.getEmail());
@@ -40,10 +42,12 @@ public class WalletService {
                 .map(WalletDto::fromEntity);
     }
 
+    @Transactional
     public void delete(String id) {
        this.walletRepository.findById(id).ifPresent(walletRepository::delete);
     }
 
+    @Transactional
     public Wallet update(String id, WalletInputDto wallet) {
         Optional<Wallet> body = walletRepository.findById(id);
         if(body.isPresent()) {
